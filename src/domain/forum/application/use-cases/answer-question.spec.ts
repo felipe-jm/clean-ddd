@@ -1,23 +1,25 @@
-import { test, expect } from "vitest";
 import { AnswerQuestionUseCase } from "./answer-question";
-import { AnswersRepository } from "../repositories/answers-repository";
+import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
 
-const fakeAnswersRepository: AnswersRepository = {
-  create: async (answer) => {
-    return answer;
-  },
-};
+let inMemoryAnswersRepository: InMemoryAnswersRepository;
+let sut: AnswerQuestionUseCase;
 
-test("create an answer", async () => {
-  const answerQuestion = new AnswerQuestionUseCase(fakeAnswersRepository);
-
-  const { answer } = await answerQuestion.execute({
-    instructorId: "1",
-    questionId: "1",
-    content: "Answer content",
+describe("Answer Question Use Case", () => {
+  beforeEach(() => {
+    inMemoryAnswersRepository = new InMemoryAnswersRepository();
+    sut = new AnswerQuestionUseCase(inMemoryAnswersRepository);
   });
 
-  expect(answer).toBeDefined();
-  expect(answer.id).toBeDefined();
-  expect(answer.content).toBe("Answer content");
+  it("should be able to create a question", async () => {
+    const { answer } = await sut.execute({
+      instructorId: "1",
+      questionId: "1",
+      content: "Answer content",
+    });
+
+    expect(answer).toBeDefined();
+    expect(answer.id).toBeDefined();
+    expect(answer.content).toBe("Answer content");
+    expect(inMemoryAnswersRepository.items[0].id).toEqual(answer.id);
+  });
 });
