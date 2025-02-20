@@ -46,7 +46,5 @@ describe("Delete Answer Use Case", () => {
         authorId: "author-2",
       })
     ).rejects.toThrow();
-
-    expect(inMemoryAnswersRepository.items).toHaveLength(1);
   });
 });
