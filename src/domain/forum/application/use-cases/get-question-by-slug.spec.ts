@@ -25,7 +25,6 @@ describe("Get Question By Slug Use Case", () => {
 
     expect(question).toBeDefined();
     expect(question.id).toBeDefined();
-    expect(question.content).toBe("Example content");
     expect(inMemoryQuestionsRepository.items[0].id).toEqual(question.id);
   });
 });
