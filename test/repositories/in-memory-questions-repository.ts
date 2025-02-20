@@ -4,6 +4,16 @@ import { QuestionsRepository } from "@/domain/forum/application/repositories/que
 export class InMemoryQuestionsRepository implements QuestionsRepository {
   public items: Question[] = [];
 
+  async findById(id: string) {
+    const question = this.items.find((item) => item.id.toString() === id);
+
+    if (!question) {
+      return null;
+    }
+
+    return question;
+  }
+
   async findBySlug(slug: string) {
     const question = this.items.find((item) => item.slug.value === slug);
 
@@ -18,5 +28,9 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
     this.items.push(question);
 
     return question;
+  }
+
+  async delete(question: Question) {
+    this.items = this.items.filter((item) => item.id !== question.id);
   }
 }
