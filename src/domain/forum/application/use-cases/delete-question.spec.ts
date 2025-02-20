@@ -40,7 +40,7 @@ describe("Delete Question Use Case", () => {
 
     await inMemoryQuestionsRepository.create(newQuestion);
 
-    expect(
+    await expect(
       sut.execute({
         questionId: "question-1",
         authorId: "author-2",
