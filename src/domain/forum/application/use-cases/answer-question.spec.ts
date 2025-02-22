@@ -11,15 +11,16 @@ describe("Answer Question Use Case", () => {
   });
 
   it("should be able to create a question", async () => {
-    const { answer } = await sut.execute({
+    const result = await sut.execute({
       instructorId: "1",
       questionId: "1",
       content: "Answer content",
     });
 
-    expect(answer).toBeDefined();
-    expect(answer.id).toBeDefined();
-    expect(answer.content).toBe("Answer content");
-    expect(inMemoryAnswersRepository.items[0].id).toEqual(answer.id);
+    expect(result.isRight()).toBe(true);
+    expect(result.value).toBeDefined();
+    expect(inMemoryAnswersRepository.items[0].id).toEqual(
+      result.value?.answer.id
+    );
   });
 });

@@ -1,14 +1,19 @@
 import { QuestionComment } from "../../enterprise/entities/question-comments";
 import { QuestionCommentsRepository } from "../repositories/question-comments-repository";
+import { Either, right } from "@/core/either";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface FetchQuestionCommentsUseCaseRequest {
   questionId: string;
   page: number;
 }
 
-interface FetchQuestionCommentsUseCaseResponse {
-  comments: QuestionComment[];
-}
+type FetchQuestionCommentsUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    comments: QuestionComment[];
+  }
+>;
 
 export class FetchQuestionCommentsUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
@@ -24,6 +29,6 @@ export class FetchQuestionCommentsUseCase {
       }
     );
 
-    return { comments };
+    return right({ comments });
   }
 }

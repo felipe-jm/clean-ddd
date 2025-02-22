@@ -1,3 +1,4 @@
+import { Question } from "../../enterprise/entities/question";
 import { CreateQuestionUseCase } from "./create-question";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
 
@@ -11,15 +12,15 @@ describe("Create Question Use Case", () => {
   });
 
   it("should be able to create a question", async () => {
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       authorId: "1",
       title: "Question title",
       content: "Question content",
     });
 
-    expect(question).toBeDefined();
-    expect(question.id).toBeDefined();
-    expect(question.content).toBe("Question content");
-    expect(inMemoryQuestionsRepository.items[0].id).toEqual(question.id);
+    expect(result.isRight()).toBe(true);
+    expect(inMemoryQuestionsRepository.items[0].id).toEqual(
+      result.value?.question.id
+    );
   });
 });

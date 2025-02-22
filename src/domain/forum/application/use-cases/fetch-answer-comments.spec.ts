@@ -10,7 +10,6 @@ let sut: FetchAnswerCommentsUseCase;
 describe("Fetch Answer Comments Use Case", () => {
   beforeEach(() => {
     inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository();
-
     sut = new FetchAnswerCommentsUseCase(inMemoryAnswerCommentsRepository);
   });
 
@@ -33,12 +32,15 @@ describe("Fetch Answer Comments Use Case", () => {
       })
     );
 
-    const { comments } = await sut.execute({
+    const result = await sut.execute({
       answerId: "answer-1",
       page: 1,
     });
 
-    expect(comments).toHaveLength(3);
+    expect(result.isRight()).toBe(true);
+    if (result.isRight()) {
+      expect(result.value?.answerComments).toHaveLength(3);
+    }
   });
 
   it("should be able to fetch paginated answer comments", async () => {
@@ -50,11 +52,14 @@ describe("Fetch Answer Comments Use Case", () => {
       );
     }
 
-    const { comments } = await sut.execute({
+    const result = await sut.execute({
       answerId: "answer-1",
       page: 2,
     });
 
-    expect(comments).toHaveLength(2);
+    expect(result.isRight()).toBe(true);
+    if (result.isRight()) {
+      expect(result.value?.answerComments).toHaveLength(2);
+    }
   });
 });

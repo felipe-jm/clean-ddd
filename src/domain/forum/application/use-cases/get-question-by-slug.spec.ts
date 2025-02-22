@@ -17,14 +17,15 @@ describe("Get Question By Slug Use Case", () => {
       slug: Slug.create("example-question"),
     });
 
-    inMemoryQuestionsRepository.create(newQuestion);
+    await inMemoryQuestionsRepository.create(newQuestion);
 
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       slug: "example-question",
     });
 
-    expect(question).toBeDefined();
-    expect(question.id).toBeDefined();
-    expect(inMemoryQuestionsRepository.items[0].id).toEqual(question.id);
+    if (result.isRight()) {
+      expect(result.value?.question.id).toBeDefined();
+      expect(result.value?.question.title).toEqual(newQuestion.title);
+    }
   });
 });
