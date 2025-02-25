@@ -1,7 +1,7 @@
 import { AnswerComment } from "../../enterprise/entities/answer-comments";
 import { AnswerCommentsRepository } from "../repositories/answer-comments-repository";
 import { Either, right } from "@/core/either";
-import { ResourceNotFoundError } from "./errors/resource-not-found-error";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found-error";
 
 interface FetchAnswerCommentsUseCaseRequest {
   answerId: string;
